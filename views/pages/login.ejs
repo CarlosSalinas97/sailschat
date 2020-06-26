@@ -1,0 +1,80 @@
+<style>
+    .center-card{
+        min-height: 100vh;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+    }
+    .full-width{
+        min-width: 100%;
+    }
+</style>
+
+<div id='app' class="columns is-multiline is-centered center-card">
+    
+    <!-- Room -->
+    <div class="column is-5-desktop is-12-mobile">
+      <div class="card full-width">
+        <div class="card-content">
+  
+            <h2 class="tag is-success is-size-4 has-text-weight-bold">Iniciar sesión</h2>
+
+            <hr>
+            <div class="content">
+                <form @submit.prevent="send">
+
+                    <div class="field">
+                        <label class="label">Correo eléctronico</label>
+                        <div class="control">
+                            <input v-model="email" class="input" type="email" placeholder="example@example.com">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Contraseña</label>
+                        <div class="control">
+                            <input v-model="password" class="input" type="password" placeholder="Contraseña">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-info">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <br>
+
+                <span>No tienes cuenta?</span>
+                <a href="/signup">Registrate</a>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<script>
+    const vue = new Vue({
+      el:'#app',
+      data(){
+        return{
+            password:'',
+            email:'',
+        }
+      },
+      methods:{
+          send(){
+            axios.post('/auth/login',{
+                email: this.email,
+                password: this.password
+            })
+            .then((res)=>{
+                localStorage.setItem('token',res.data.token)
+                window.location = '/home'     
+            })
+          }
+      }
+    })
+</script>
